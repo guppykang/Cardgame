@@ -29,13 +29,19 @@ defmodule Cards do
   end
 
   def readBinaryDeck(filename) do
-    { status, binary } = File.read(filename) 
 
-    case status do 
-      :ok -> realData = :erlang.binary_to_term(binary)
-      :error -> "That file does not exist"
+    case File.read(filename) do 
+      { :ok, binary } -> realData = :erlang.binary_to_term(binary)
+      { :error, _reason } -> "That file does not exist"
     end
 
 
   end 
+  
+  def create_hand(hand_size) do 
+    Cards.create_deck
+    |> Cards.shuffle 
+    |> Cards.deal(hand_size)
+  end
+
 end
